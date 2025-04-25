@@ -1,0 +1,24 @@
+local ProximityPromptService = game:GetService("ProximityPromptService")
+local Workspace = game:GetService("Workspace")
+
+-- Function to set HoldDuration to 0
+local function applyZeroHold(prompt)
+	if prompt:IsA("ProximityPrompt") then
+		prompt.HoldDuration = 0
+	end
+end
+
+-- Apply to existing prompts once
+for _, v in pairs(Workspace:GetDescendants()) do
+	applyZeroHold(v)
+end
+
+-- Apply to future prompts
+Workspace.DescendantAdded:Connect(function(descendant)
+	applyZeroHold(descendant)
+end)
+
+-- Ensure HoldDuration stays 0 if player interacts
+ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt, player)
+	prompt.HoldDuration = 0
+end)
