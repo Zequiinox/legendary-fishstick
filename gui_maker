@@ -1,3 +1,5 @@
+--(by Nova Haong on dc)
+
 loadstring(game:HttpGet(('https://pastefy.app/EOgPqinS/raw'),true))()
 -- Dịch vụ cần thiết
 local Players = game:GetService("Players")
