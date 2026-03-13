@@ -1,0 +1,105 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Lighting = game:GetService("Lighting")
+
+local Window = Rayfield:CreateWindow({
+   Name = "CFrame Teleport Maker",
+   Icon = 0,
+   LoadingTitle = "CFrame Teleport Script Maker",
+   LoadingSubtitle = "by Lucerity. (with the dot)",
+   Theme = "Default"
+})
+
+local MainTab = Window:CreateTab("Main", "person-standing")
+local OthersTab = Window:CreateTab("Others", "lightbulb")
+
+MainTab:CreateSection("Main")
+
+MainTab:CreateDivider()
+
+MainTab:CreateButton({
+   Name = "Copy Current CFrame",
+   Callback = function()
+       setclipboard(tostring(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame))
+   end,
+})
+
+MainTab:CreateSection("With Textbox")
+
+local CFrameValue = ""
+
+MainTab:CreateInput({
+   Name = "Place CFrame Here",
+   CurrentValue = "",
+   PlaceholderText = "0",
+   RemoveTextAfterFocusLost = true,
+   Flag = "Input1",
+   Callback = function(Text)
+       CFrameValue = Text
+   end,
+})
+
+MainTab:CreateButton({
+   Name = "Copy CFrame from Textbox",
+   Callback = function()
+       if CFrameValue ~= "" then
+           setclipboard("game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new("..CFrameValue..")")
+       else
+           Rayfield:Notify({
+               Title = "Error",
+               Content = "Textbox is empty. Please enter a CFrame.",
+               Duration = 3
+           })
+       end
+   end,
+})
+
+MainTab:CreateSection("Doing it yourself")
+MainTab:CreateSection("Place the CFrame between the () after copying it")
+
+MainTab:CreateButton({
+   Name = "Copy CFrame Inputter",
+   Callback = function()
+       setclipboard("game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()")
+   end,
+})
+
+MainTab:CreateButton({
+   Name = "Destroy GUI",
+   Callback = function()
+       Rayfield:Destroy()
+   end,
+})
+
+-- FullBright system
+local OldLighting = {}
+
+OthersTab:CreateSection("Lighting")
+
+OthersTab:CreateToggle({
+   Name = "FullBright",
+   CurrentValue = false,
+   Flag = "FullBrightToggle",
+   Callback = function(Value)
+
+        if Value then
+            OldLighting.Brightness = Lighting.Brightness
+            OldLighting.ClockTime = Lighting.ClockTime
+            OldLighting.FogEnd = Lighting.FogEnd
+            OldLighting.GlobalShadows = Lighting.GlobalShadows
+            OldLighting.Ambient = Lighting.Ambient
+
+            Lighting.Brightness = 5
+            Lighting.ClockTime = 12
+            Lighting.FogEnd = 100000
+            Lighting.GlobalShadows = false
+            Lighting.Ambient = Color3.fromRGB(255,255,255)
+
+        else
+            for i,v in pairs(OldLighting) do
+                Lighting[i] = v
+            end
+        end
+
+   end
+})
